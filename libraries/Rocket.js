@@ -8,6 +8,7 @@ class Rocket {
   static throttleRate = 0.01;
   static throttleMin = 0.1;
   static throttleMax = 0.6;
+
   constructor(x, y, size) {
     this.body = Bodies.rectangle(x, y, size, size, {
       frictionAir: 0,
@@ -28,20 +29,22 @@ class Rocket {
       this.body,
       this.body.angularVelocity + Rocket.rotScale * dir
     );
-    console.log("rotating", dir, this.body.angularVelocity);
+    console.log(
+      `rotating towards ${dir} spinning at ${this.body.angularVelocity}`
+    );
   }
 
   setThrottle(val) {
     val = Math.min(val, Rocket.throttleMax);
     val = Math.max(val, Rocket.throttleMin);
 
-    console.log("setting throttle", this.throttle, val);
+    console.log(`setting throttle from ${this.throttle} to ${val}`);
     this.throttle = val;
   }
 
   toggleEngine() {
     this.engineOn = !this.engineOn;
-    console.log("toggling engines to", this.engineOn);
+    console.log(`toggling engines to ${this.engineOn}`);
   }
 
   update() {

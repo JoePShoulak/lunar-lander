@@ -15,6 +15,20 @@ const win = {
   hHeight: 300,
 };
 
+const rocketSize = 20;
+const rocket = new Rocket(win.hWidth, win.hHeight, rocketSize);
+
+const groundSize = 60;
+const ground = Bodies.rectangle(
+  win.hWidth,
+  win.height - groundSize / 2,
+  win.width,
+  groundSize,
+  { isStatic: true }
+);
+
+Composite.add(engine.world, [rocket.body, ground]);
+
 // create a renderer
 const render = Render.create({
   element: document.body,
@@ -29,21 +43,6 @@ const render = Render.create({
     showPositions: true,
   },
 });
-
-const rocketSize = 20;
-const groundSize = 60;
-
-const ground = Bodies.rectangle(
-  win.hWidth,
-  win.height - groundSize / 2,
-  win.width,
-  groundSize,
-  { isStatic: true }
-);
-
-const rocket = new Rocket(win.hWidth, win.hHeight, rocketSize);
-
-Composite.add(engine.world, [rocket.body, ground]);
 Render.run(render);
 
 let keyLeftPressed = false;
@@ -65,7 +64,6 @@ document.addEventListener("keyup", e => setKeys(e, false));
 
 // run the engine
 (function run() {
-  // if (keyUpPressed) rocket.thrust();
   if (keyLeftPressed) rocket.rotate(-1);
   if (keyRightPressed) rocket.rotate(1);
 
