@@ -18,6 +18,10 @@ class Rocket {
     this.throttle = 0.1;
   }
 
+  get thrustVec() {
+    return new Vector(Math.cos(this.body.angle), Math.sin(this.body.angle));
+  }
+
   rotate(dir) {
     Body.setAngularVelocity(
       this.body,
@@ -44,11 +48,10 @@ class Rocket {
   }
 
   thrust() {
-    const thrustVec = {
-      x: Math.cos(this.body.angle) * 0.0002 * this.throttle,
-      y: Math.sin(this.body.angle) * 0.0002 * this.throttle,
-    };
-
-    Body.applyForce(this.body, this.body.position, thrustVec);
+    Body.applyForce(
+      this.body,
+      this.body.position,
+      this.thrustVec.mult(0.0002 * this.throttle)
+    );
   }
 }
