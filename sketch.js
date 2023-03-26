@@ -18,12 +18,13 @@ const win = {
 const rocketSize = 20;
 const rocket = new Rocket(win.hWidth, win.hHeight, rocketSize);
 
-const groundSize = 60;
+const groundHeight = 60;
+const groundWidth = 10 ** 5;
 const ground = Bodies.rectangle(
   win.hWidth,
-  win.height - groundSize / 2,
-  win.width,
-  groundSize,
+  win.height - groundHeight / 2,
+  groundWidth,
+  groundHeight,
   { isStatic: true }
 );
 
@@ -43,6 +44,16 @@ const render = Render.create({
     showPositions: true,
   },
 });
+
+let oldRocketPosition = rocket.body.position.x;
+
+Matter.Events.on(render, "beforeRender", function () {
+  var canvas = render.canvas;
+  var context = canvas.getContext("2d");
+  context.translate(oldRocketPosition - rocket.body.position.x, 0); // Move camera to the left
+  oldRocketPosition = rocket.body.position.x;
+});
+
 Render.run(render);
 
 let keyLeftPressed = false;
