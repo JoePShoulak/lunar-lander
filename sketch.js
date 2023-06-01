@@ -45,13 +45,20 @@ const render = Render.create({
   },
 });
 
-let oldRocketPosition = rocket.body.position.x;
+let oldRocketPosition = { ...rocket.body.position };
 
 Matter.Events.on(render, "beforeRender", function () {
   var canvas = render.canvas;
   var context = canvas.getContext("2d");
-  context.translate(oldRocketPosition - rocket.body.position.x, 0); // Move camera to the left
-  oldRocketPosition = rocket.body.position.x;
+
+  const dy =
+    rocket.body.position.y <= win.hHeight
+      ? oldRocketPosition.y - rocket.body.position.y
+      : 0;
+
+  context.translate(oldRocketPosition.x - rocket.body.position.x, dy); // Move camera to the left
+
+  oldRocketPosition = { ...rocket.body.position };
 });
 
 Render.run(render);
